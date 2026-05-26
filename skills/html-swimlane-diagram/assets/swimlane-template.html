@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TITLE}}</title>
+  <style>
+    :root {
+      --blue: #416bb3;
+      --blue-dark: #315596;
+      --line: #8fb0ee;
+      --grid: #6f92d6;
+      --paper: #fbfdff;
+      --ink: #1f3763;
+      --lane-width: 211.25px;
+      --phase-width: 70px;
+      --header-height: 126px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #e9eef8;
+      color: var(--ink);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      overflow: hidden;
+    }
+
+    .page {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .canvas-shell {
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      background: white;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      width: var(--canvas-width);
+      height: var(--header-height);
+      margin: 0 auto calc(var(--header-height) * -1);
+      color: #ffffff;
+      font-weight: 700;
+      letter-spacing: 0;
+      box-shadow: 0 2px 0 rgba(49, 85, 150, 0.35);
+    }
+
+    .sticky-title {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      padding-left: 22px;
+      background: var(--blue);
+      font-size: 22px;
+    }
+
+    .sticky-lanes {
+      height: 56px;
+      display: grid;
+      grid-template-columns: var(--phase-width) repeat(var(--lane-count), var(--lane-width));
+      background: var(--blue-dark);
+      border-bottom: 1.25px solid var(--grid);
+    }
+
+    .sticky-lanes div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-left: 1.25px solid var(--grid);
+      font-size: 15px;
+    }
+
+    .sticky-lanes div:last-child {
+      border-right: 1.25px solid var(--grid);
+    }
+
+    svg {
+      display: block;
+      width: var(--canvas-width);
+      height: var(--canvas-height);
+      max-width: none;
+      margin: 0 auto;
+      background: var(--paper);
+    }
+
+    .title-band {
+      fill: var(--blue);
+    }
+
+    .lane-head,
+    .phase-head {
+      fill: var(--blue-dark);
+    }
+
+    .grid-line {
+      stroke: var(--grid);
+      stroke-width: 1.25;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .phase-divider {
+      stroke: var(--grid);
+      stroke-width: 1.6;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .node {
+      fill: var(--blue);
+      stroke: #315a9f;
+      stroke-width: 1.2;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .start-end {
+      rx: 24;
+      ry: 24;
+    }
+
+    .node-text,
+    .head-text,
+    .phase-text,
+    .title-text,
+    .link-label {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      letter-spacing: 0;
+    }
+
+    .title-text {
+      fill: #ffffff;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .head-text {
+      fill: #eef4ff;
+      font-size: 15px;
+      font-weight: 600;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .phase-text {
+      fill: #eef4ff;
+      font-size: 16px;
+      font-weight: 700;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .node-text {
+      fill: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+
+    .link {
+      fill: none;
+      stroke: var(--line);
+      stroke-width: 1.8;
+      vector-effect: non-scaling-stroke;
+      marker-end: url(#arrow);
+    }
+
+    .arrow-head {
+      fill: var(--blue);
+      stroke: none;
+    }
+
+    .link-label {
+      fill: #5175ba;
+      font-size: 12px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      paint-order: stroke;
+      stroke: var(--paper);
+      stroke-width: 5px;
+      stroke-linejoin: round;
+    }
+
+    @media print {
+      body {
+        background: white;
+        overflow: visible;
+      }
+
+      .page,
+      .canvas-shell {
+        width: auto;
+        height: auto;
+        overflow: visible;
+      }
+
+      .sticky-header {
+        display: none;
+      }
+
+      svg {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" style="--lane-count: {{LANE_COUNT}}; --canvas-width: {{CANVAS_WIDTH}}px; --canvas-height: {{CANVAS_HEIGHT}}px;">
+    <section class="canvas-shell" aria-label="{{TITLE}}">
+      <header class="sticky-header" aria-hidden="true">
+        <div class="sticky-title">{{TITLE}}</div>
+        <div class="sticky-lanes">
+          <div>阶段</div>
+          {{LANE_HEADER_DIVS}}
+        </div>
+      </header>
+
+      <svg viewBox="0 0 {{CANVAS_WIDTH}} {{CANVAS_HEIGHT}}" role="img" aria-labelledby="diagram-title">
+        <title id="diagram-title">{{TITLE}}</title>
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+            <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z"></path>
+          </marker>
+        </defs>
+
+        <!-- Replace the placeholders below with generated phase bands, grid lines, nodes, labels, and links. -->
+        {{SVG_CONTENT}}
+      </svg>
+    </section>
+  </main>
+  <!-- Optional for complex diagrams: generate nodes first, then route links from structured node/edge data. -->
+  <script>
+    // Keep static HTML valid even when no runtime routing is needed.
+    window.swimlaneDiagram = window.swimlaneDiagram || { nodes: [], edges: [] };
+  </script>
+</body>
+</html>

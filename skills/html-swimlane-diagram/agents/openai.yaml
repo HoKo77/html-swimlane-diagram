@@ -1,0 +1,4 @@
+interface:
+  display_name: "HTML Swimlane Diagram"
+  short_description: "Generate polished HTML/SVG swimlane diagrams."
+  default_prompt: "Use $html-swimlane-diagram to convert this role-based workflow into a single fixed-column HTML/SVG swimlane diagram with decision branches, routed arrows, and a sticky header."

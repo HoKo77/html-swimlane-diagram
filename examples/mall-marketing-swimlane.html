@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>商城后台营销活动泳道图</title>
+  <style>
+    :root {
+      --blue: #416bb3;
+      --blue-dark: #315596;
+      --line: #8fb0ee;
+      --grid: #6f92d6;
+      --paper: #fbfdff;
+      --ink: #1f3763;
+      --lane-width: 211.25px;
+      --phase-width: 70px;
+      --header-height: 126px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #e9eef8;
+      color: var(--ink);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      overflow: hidden;
+    }
+
+    .page {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .canvas-shell {
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      background: white;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      width: var(--canvas-width);
+      height: var(--header-height);
+      margin: 0 auto calc(var(--header-height) * -1);
+      color: #ffffff;
+      font-weight: 700;
+      letter-spacing: 0;
+      box-shadow: 0 2px 0 rgba(49, 85, 150, 0.35);
+    }
+
+    .sticky-title {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      padding-left: 22px;
+      background: var(--blue);
+      font-size: 22px;
+    }
+
+    .sticky-lanes {
+      height: 56px;
+      display: grid;
+      grid-template-columns: var(--phase-width) repeat(var(--lane-count), var(--lane-width));
+      background: var(--blue-dark);
+      border-bottom: 1.25px solid var(--grid);
+    }
+
+    .sticky-lanes div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-left: 1.25px solid var(--grid);
+      font-size: 15px;
+    }
+
+    .sticky-lanes div:last-child { border-right: 1.25px solid var(--grid); }
+
+    svg {
+      display: block;
+      width: var(--canvas-width);
+      height: var(--canvas-height);
+      max-width: none;
+      margin: 0 auto;
+      background: var(--paper);
+    }
+
+    .title-band { fill: var(--blue); }
+    .lane-head, .phase-head { fill: var(--blue-dark); }
+    .phase-fill { fill: #eef4ff; }
+    .grid-line {
+      stroke: var(--grid);
+      stroke-width: 1.25;
+      vector-effect: non-scaling-stroke;
+    }
+    .phase-divider {
+      stroke: var(--grid);
+      stroke-width: 1.6;
+      vector-effect: non-scaling-stroke;
+    }
+    .node {
+      fill: var(--blue);
+      stroke: #315a9f;
+      stroke-width: 1.2;
+      vector-effect: non-scaling-stroke;
+    }
+    .node.alt { fill: #5f7fbd; }
+    .start-end { rx: 24; ry: 24; }
+    .diamond {
+      fill: #365f9f;
+      stroke: #284f8d;
+      stroke-width: 1.2;
+      vector-effect: non-scaling-stroke;
+    }
+    .node-text, .head-text, .phase-text, .title-text, .subtitle-text, .link-label {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      letter-spacing: 0;
+    }
+    .title-text {
+      fill: #ffffff;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .subtitle-text {
+      fill: #dbe8ff;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .head-text {
+      fill: #eef4ff;
+      font-size: 15px;
+      font-weight: 600;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .phase-text {
+      fill: #eef4ff;
+      font-size: 16px;
+      font-weight: 700;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .node-text {
+      fill: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+    .note-text {
+      fill: #476aa8;
+      font-size: 12px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .link {
+      fill: none;
+      stroke: var(--line);
+      stroke-width: 1.8;
+      vector-effect: non-scaling-stroke;
+      marker-end: url(#arrow);
+    }
+    .arrow-head {
+      fill: var(--blue);
+      stroke: none;
+    }
+    .link-label {
+      fill: #5175ba;
+      font-size: 12px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      paint-order: stroke;
+      stroke: var(--paper);
+      stroke-width: 5px;
+      stroke-linejoin: round;
+    }
+
+    @media print {
+      body { background: white; overflow: visible; }
+      .page, .canvas-shell { width: auto; height: auto; overflow: visible; }
+      .sticky-header { display: none; }
+      svg { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" style="--lane-count: 5; --canvas-width: 1126px; --canvas-height: 1700px;">
+    <section class="canvas-shell" aria-label="商城后台营销活动泳道图">
+      <header class="sticky-header" aria-hidden="true">
+        <div class="sticky-title">商城后台营销活动泳道图</div>
+        <div class="sticky-lanes">
+          <div>阶段</div>
+          <div>营销运营</div>
+          <div>商品/库存</div>
+          <div>设计/内容</div>
+          <div>运营主管</div>
+          <div>客服/数据</div>
+        </div>
+      </header>
+
+      <svg viewBox="0 0 1126 1700" role="img" aria-labelledby="diagram-title">
+        <title id="diagram-title">商城后台营销活动泳道图</title>
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+            <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z"></path>
+          </marker>
+        </defs>
+
+        <rect class="title-band" x="0" y="0" width="1126" height="70"></rect>
+        <text class="title-text" x="22" y="35" dominant-baseline="middle">商城后台营销活动泳道图</text>
+        <text class="subtitle-text" x="335" y="35" dominant-baseline="middle">角色泳道；流程基于常见商城后台营销活动默认做法，可按实际组织调整</text>
+
+        <rect class="phase-head" x="0" y="70" width="70" height="56"></rect>
+        <rect class="lane-head" x="70" y="70" width="211.25" height="56"></rect>
+        <rect class="lane-head" x="281.25" y="70" width="211.25" height="56"></rect>
+        <rect class="lane-head" x="492.5" y="70" width="211.25" height="56"></rect>
+        <rect class="lane-head" x="703.75" y="70" width="211.25" height="56"></rect>
+        <rect class="lane-head" x="915" y="70" width="211" height="56"></rect>
+        <text class="head-text" x="35" y="98">阶段</text>
+        <text class="head-text" x="175.625" y="98">营销运营</text>
+        <text class="head-text" x="386.875" y="98">商品/库存</text>
+        <text class="head-text" x="598.125" y="98">设计/内容</text>
+        <text class="head-text" x="809.375" y="98">运营主管</text>
+        <text class="head-text" x="1020.5" y="98">客服/数据</text>
+
+        <rect class="phase-head" x="0" y="126" width="70" height="260"></rect>
+        <rect class="phase-head" x="0" y="386" width="70" height="290"></rect>
+        <rect class="phase-head" x="0" y="676" width="70" height="310"></rect>
+        <rect class="phase-head" x="0" y="986" width="70" height="370"></rect>
+        <rect class="phase-head" x="0" y="1356" width="70" height="344"></rect>
+        <text class="phase-text" x="35" y="256">策划</text>
+        <text class="phase-text" x="35" y="531">配置</text>
+        <text class="phase-text" x="35" y="831">审核</text>
+        <text class="phase-text" x="35" y="1171">发布</text>
+        <text class="phase-text" x="35" y="1528">复盘</text>
+
+        <path class="grid-line" d="M 70 70 V 1700"></path>
+        <path class="grid-line" d="M 281.25 70 V 1700"></path>
+        <path class="grid-line" d="M 492.5 70 V 1700"></path>
+        <path class="grid-line" d="M 703.75 70 V 1700"></path>
+        <path class="grid-line" d="M 915 70 V 1700"></path>
+        <path class="grid-line" d="M 1126 70 V 1700"></path>
+        <path class="grid-line" d="M 0 70 H 1126"></path>
+        <path class="grid-line" d="M 0 126 H 1126"></path>
+        <path class="phase-divider" d="M 0 386 H 1126"></path>
+        <path class="phase-divider" d="M 0 676 H 1126"></path>
+        <path class="phase-divider" d="M 0 986 H 1126"></path>
+        <path class="phase-divider" d="M 0 1356 H 1126"></path>
+        <path class="grid-line" d="M 0 1700 H 1126"></path>
+
+        <rect class="node start-end" x="102.625" y="150" width="146" height="50"></rect>
+        <text class="node-text" x="175.625" y="175">活动需求发起</text>
+
+        <rect class="node" x="102.625" y="245" width="146" height="58"></rect>
+        <text class="node-text" x="175.625" y="268">
+          <tspan x="175.625" dy="0">定义目标</tspan>
+          <tspan x="175.625" dy="17">预算与玩法</tspan>
+        </text>
+
+        <rect class="node" x="102.625" y="342" width="146" height="58"></rect>
+        <text class="node-text" x="175.625" y="365">
+          <tspan x="175.625" dy="0">形成活动方案</tspan>
+          <tspan x="175.625" dy="17">排期/门槛/券规则</tspan>
+        </text>
+
+        <polygon class="diamond" points="386.875,424 456.875,469 386.875,514 316.875,469"></polygon>
+        <text class="node-text" x="386.875" y="462">
+          <tspan x="386.875" dy="0">商品库存</tspan>
+          <tspan x="386.875" dy="17">是否满足?</tspan>
+        </text>
+
+        <rect class="node alt" x="102.625" y="444" width="146" height="50"></rect>
+        <text class="node-text" x="175.625" y="469">调整商品/库存</text>
+
+        <rect class="node" x="102.625" y="570" width="146" height="58"></rect>
+        <text class="node-text" x="175.625" y="593">
+          <tspan x="175.625" dy="0">配置活动规则</tspan>
+          <tspan x="175.625" dy="17">券/满减/拼团等</tspan>
+        </text>
+
+        <rect class="node" x="525.125" y="570" width="146" height="58"></rect>
+        <text class="node-text" x="598.125" y="593">
+          <tspan x="598.125" dy="0">制作活动素材</tspan>
+          <tspan x="598.125" dy="17">会场/商品图/文案</tspan>
+        </text>
+
+        <rect class="node" x="736.375" y="720" width="146" height="58"></rect>
+        <text class="node-text" x="809.375" y="743">
+          <tspan x="809.375" dy="0">提交活动审核</tspan>
+          <tspan x="809.375" dy="17">含预算与风险点</tspan>
+        </text>
+
+        <polygon class="diamond" points="809.375,840 879.375,885 809.375,930 739.375,885"></polygon>
+        <text class="node-text" x="809.375" y="878">
+          <tspan x="809.375" dy="0">主管审核</tspan>
+          <tspan x="809.375" dy="17">是否通过?</tspan>
+        </text>
+
+        <rect class="node alt" x="525.125" y="860" width="146" height="50"></rect>
+        <text class="node-text" x="598.125" y="885">按意见修改</text>
+
+        <rect class="node" x="102.625" y="1034" width="146" height="58"></rect>
+        <text class="node-text" x="175.625" y="1057">
+          <tspan x="175.625" dy="0">发布并预热</tspan>
+          <tspan x="175.625" dy="17">定时/渠道/人群</tspan>
+        </text>
+
+        <rect class="node" x="947.5" y="1034" width="146" height="58"></rect>
+        <text class="node-text" x="1020.5" y="1057">
+          <tspan x="1020.5" dy="0">客服准备口径</tspan>
+          <tspan x="1020.5" dy="17">FAQ/售后规则</tspan>
+        </text>
+
+        <rect class="node" x="947.5" y="1168" width="146" height="58"></rect>
+        <text class="node-text" x="1020.5" y="1191">
+          <tspan x="1020.5" dy="0">监控数据与反馈</tspan>
+          <tspan x="1020.5" dy="17">流量/转化/客诉</tspan>
+        </text>
+
+        <polygon class="diamond" points="809.375,1284 879.375,1329 809.375,1374 739.375,1329"></polygon>
+        <text class="node-text" x="809.375" y="1322">
+          <tspan x="809.375" dy="0">是否异常?</tspan>
+          <tspan x="809.375" dy="17">库存/价格/客诉</tspan>
+        </text>
+
+        <rect class="node alt" x="525.125" y="1304" width="146" height="50"></rect>
+        <text class="node-text" x="598.125" y="1329">调整或暂停活动</text>
+
+        <rect class="node" x="102.625" y="1448" width="146" height="58"></rect>
+        <text class="node-text" x="175.625" y="1471">
+          <tspan x="175.625" dy="0">活动下线</tspan>
+          <tspan x="175.625" dy="17">关闭入口/核销检查</tspan>
+        </text>
+
+        <rect class="node" x="947.5" y="1448" width="146" height="58"></rect>
+        <text class="node-text" x="1020.5" y="1471">
+          <tspan x="1020.5" dy="0">拉取复盘数据</tspan>
+          <tspan x="1020.5" dy="17">GMV/ROI/留存</tspan>
+        </text>
+
+        <rect class="node start-end" x="736.375" y="1582" width="146" height="50"></rect>
+        <text class="node-text" x="809.375" y="1607">沉淀复盘与下次策略</text>
+
+        <path class="link" d="M 175.625 200 V 245"></path>
+        <path class="link" d="M 175.625 303 V 342"></path>
+        <path class="link" d="M 248.625 371 H 386.875 V 424"></path>
+        <path class="link" d="M 316.875 469 H 248.625"></path>
+        <text class="link-label" x="278" y="456">N</text>
+        <path class="link" d="M 175.625 444 V 424 H 386.875"></path>
+        <text class="link-label" x="250" y="424">重新提交</text>
+        <path class="link" d="M 386.875 514 V 548 H 175.625 V 570"></path>
+        <text class="link-label" x="374" y="548">Y</text>
+        <path class="link" d="M 248.625 599 H 525.125"></path>
+        <path class="link" d="M 598.125 628 V 690 H 809.375 V 720"></path>
+        <path class="link" d="M 809.375 778 V 840"></path>
+        <path class="link" d="M 739.375 885 H 671.125"></path>
+        <text class="link-label" x="704" y="872">N</text>
+        <path class="link" d="M 598.125 860 V 806 H 725 V 840 H 809.375"></path>
+        <text class="link-label" x="663" y="806">重新提交</text>
+        <path class="link" d="M 809.375 930 V 958 H 175.625 V 1034"></path>
+        <text class="link-label" x="826" y="958">Y</text>
+        <path class="link" d="M 248.625 1063 H 947.5"></path>
+        <path class="link" d="M 1020.5 1092 V 1168"></path>
+        <path class="link" d="M 947.5 1197 H 899 V 1329 H 879.375"></path>
+        <path class="link" d="M 739.375 1329 H 671.125"></path>
+        <text class="link-label" x="704" y="1316">Y</text>
+        <path class="link" d="M 598.125 1304 V 1264 H 809.375 V 1284"></path>
+        <text class="link-label" x="690" y="1264">处理后继续</text>
+        <path class="link" d="M 809.375 1374 V 1418 H 175.625 V 1448"></path>
+        <text class="link-label" x="827" y="1418">N</text>
+        <path class="link" d="M 248.625 1477 H 947.5"></path>
+        <path class="link" d="M 1020.5 1506 V 1554 H 809.375 V 1582"></path>
+      </svg>
+    </section>
+  </main>
+  <script>
+    window.swimlaneDiagram = window.swimlaneDiagram || { nodes: [], edges: [] };
+  </script>
+</body>
+</html>
