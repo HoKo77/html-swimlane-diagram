@@ -1,39 +1,59 @@
-# HTML Swimlane Diagram · Editable HTML Swimlane Diagram Skill
+# HTML Swimlane Diagram Skills
 
-An agent skill for Codex, Claude Code, Cursor, and similar coding-agent environments. It converts business workflows, approval processes, system flows, rough notes, or Mermaid-style process material into a **single-file HTML/SVG swimlane diagram**.
+![Skill](https://img.shields.io/badge/Skill-Codex-315596)
+![Output](https://img.shields.io/badge/Output-HTML%20%2F%20SVG-416bb3)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-The goal is not to create a static screenshot. The skill produces an editable `.html` file that can be opened in a browser, inspected, modified, and validated.
+```text
+HTML Swimlane Diagram
+├─ Editable single-file HTML/SVG
+├─ Role or system swimlanes
+├─ Y/N decision branches
+├─ Orthogonal arrows and rework loops
+└─ Bundled connector linter
+```
+
+An agent skill package for Codex-style environments. It converts business workflows, approval processes, system flows, Mermaid snippets, or rough notes into an **editable single-file HTML/SVG swimlane diagram**.
+
+The point is not just to draw a picture. The skill gives the agent a repeatable process for workflow extraction, lane normalization, node placement, arrow routing, and connector validation.
+
+## Skills
+
+| Skill | Purpose | Output | Risk Level |
+| --- | --- | --- | --- |
+| `html-swimlane-diagram` | Generate or refine swimlane diagrams for business workflows, approval flows, system flows, SOPs, and product docs | One `.html` file with inline SVG/CSS | Low: local file generation, no external service dependency |
+
+## Agent Quick Reference
+
+Shortest useful prompt:
+
+```text
+Use $html-swimlane-diagram to generate a role-based swimlane diagram for a mall admin marketing campaign.
+```
+
+Recommended input fields:
+
+- Workflow topic: ecommerce campaign, procurement approval, inventory transfer, ticket handling
+- Lane preference: role/organization lanes or system/module lanes
+- Key steps: initiate, configure, review, launch, monitor, retrospective
+- Decisions: approved, rejected, abnormal, rework required
+- Output request: generate one editable HTML file
+
+If you only provide a vague domain, the skill should research common workflow defaults first and label the result as a draft.
 
 ## What You Get
 
-- Fixed-lane diagrams for role/organization lanes, system/module lanes, or another single homogeneous dimension
-- Phase bands with a left-side phase rail and sticky lane header
-- Decision diamonds with explicit `Y/N` branches
-- Local rework loops for rejection, exception handling, and resubmission
-- Orthogonal SVG connectors with horizontal/vertical routing
-- A bundled Python linter for diagonal, crossing, and overlapping connector paths
-- Single-file HTML output with inline CSS/SVG, no build step or server required
-
-## Fits / Doesn't Fit
-
-Fits:
-
-- Admin workflows for ecommerce, ERP, CRM, OA, support, and internal tools
-- Approval flows, procurement flows, inventory flows, campaign flows, ticket flows
-- Role-based diagrams that clarify ownership and handoffs
-- System/module diagrams that clarify boundaries and data movement
-- Product portfolios, requirement reviews, SOP documentation, and interview artifacts
-
-Doesn't fit:
-
-- Large-scale BPMN modeling and simulation
-- Multi-user real-time diagram editing platforms
-- Freeform posters or highly decorative infographics
-- Workflows that must export native Visio, Draw.io, or Figma source files
+- **Fixed lanes**: one lane dimension per diagram
+- **Phase bands**: left-side phase rail and sticky lane header
+- **Decision nodes**: approval, validation, and exception handling as diamonds with `Y/N`
+- **Rework loops**: local rejection and resubmission paths
+- **Orthogonal arrows**: SVG paths using horizontal/vertical routing
+- **Quality checks**: bundled linter for diagonal, crossing, and overlapping links
+- **Single-file output**: inline CSS/SVG, no build step or server required
 
 ## Install
 
-### Option 1: Skill Installer
+### Skill Installer
 
 ```bash
 $skill-installer install https://github.com/<your-github-username>/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram
@@ -41,40 +61,58 @@ $skill-installer install https://github.com/<your-github-username>/html-swimlane
 
 Restart Codex if the skill does not appear immediately.
 
-### Option 2: Paste This To An AI Agent
+### Manual / Agent-Assisted Install
+
+Paste this to an agent with shell access:
 
 ```text
 Install the html-swimlane-diagram skill for me:
 1. Make sure the local Codex skills directory exists.
 2. Install the skill from https://github.com/<your-github-username>/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram.
-3. Verify the installed skill contains SKILL.md, assets/, references/, and scripts/.
-4. Tell me the result.
+3. Verify the installed skill contains SKILL.md, agents/, assets/, references/, and scripts/.
+4. Run the example validation script and tell me the result.
 ```
 
-## How To Trigger It
+## Example Prompts
 
 ```text
 Use $html-swimlane-diagram to generate a role-based swimlane diagram for a mall admin marketing campaign.
 ```
 
-More trigger examples:
+```text
+Use $html-swimlane-diagram to turn this procurement approval process into a role swimlane diagram:
+requester submits purchase request -> procurement collects quotes -> manager reviews -> finance reviews -> order is placed -> goods are received -> reconciliation and payment.
+```
 
-- `Use $html-swimlane-diagram to turn this procurement approval flow into a swimlane diagram.`
-- `Generate a role-based swimlane diagram for the ticket lifecycle from submission to closure.`
-- `Convert this Mermaid sequence diagram into an editable HTML swimlane diagram.`
-- `Draw a system-module swimlane diagram for order, inventory, payment, and notification flow.`
+```text
+Use $html-swimlane-diagram to generate a system-module swimlane diagram for order, inventory, payment, and notification flow.
+```
 
-## Workflow
+## How It Works
 
-The skill follows a structured workflow:
+```text
+workflow input
+  ↓
+understand and research
+  ↓
+choose lane dimension
+  ↓
+place nodes
+  ↓
+route orthogonal links
+  ↓
+run SVG link linter
+  ↓
+deliver single-file HTML
+```
 
-1. Understand the input: goals, phases, actions, approvals, branches, and end states
-2. Choose one lane dimension: roles/organizations, systems/modules, or another homogeneous dimension
-3. Research missing defaults when the user provides only a vague domain request
-4. Place every node before drawing connectors
-5. Route arrows with horizontal/vertical SVG paths and compact rework loops
-6. Run the connector linter
-7. Deliver one editable `.html` file
+Core rules:
+
+- Choose exactly one lane dimension per diagram.
+- In role lanes, approval nodes belong to reviewers, not submitters.
+- In system lanes, decision nodes belong to the system that owns the rule or data.
+- Place every node before drawing arrows.
+- Prefer compact local loops for rejection and exception paths.
 
 ## Repository Layout
 
@@ -99,16 +137,14 @@ html-swimlane-diagram/
         └── scripts/lint_svg_links.py
 ```
 
-## Example
-
-This repository includes a mall admin marketing campaign example:
+## Included Example
 
 - Input brief: [examples/mall-marketing-workflow.md](examples/mall-marketing-workflow.md)
 - Generated diagram: [examples/mall-marketing-swimlane.html](examples/mall-marketing-swimlane.html)
 
-Open the HTML file directly in a browser.
+Open `examples/mall-marketing-swimlane.html` directly in a browser.
 
-## Validate
+## Validation
 
 Validate the example connector paths:
 
@@ -116,22 +152,27 @@ Validate the example connector paths:
 python3 skills/html-swimlane-diagram/scripts/lint_svg_links.py examples/mall-marketing-swimlane.html
 ```
 
-Validate the repository structure and example:
+Validate the repository structure and example output:
 
 ```bash
 python3 scripts/validate_repo.py
 ```
 
-GitHub Actions runs the same repository validation on push and pull request.
+GitHub Actions runs validation on push and pull request.
 
-## Design Principles
+## Scope
 
-- Choose exactly one lane dimension per diagram.
-- Do not mix people/departments and systems/modules as peer lanes.
-- Put approval nodes in the reviewer, manager, compliance, or owning-system lane.
-- Place business nodes before connector routing.
-- Keep rework loops local and readable.
-- Every generated diagram should be readable, editable, and validated.
+Fits:
+
+- Admin workflows, approval flows, ticket flows, procurement flows, inventory flows, campaign flows
+- Product docs, requirement reviews, SOPs, portfolio artifacts
+- Cases where editable HTML is more useful than a one-off screenshot
+
+Doesn't fit:
+
+- Large-scale BPMN modeling and simulation
+- Multi-user real-time diagramming platforms
+- Workflows that must export native Visio, Draw.io, or Figma source files
 
 ## License
 
