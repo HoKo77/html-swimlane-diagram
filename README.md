@@ -153,22 +153,6 @@ html-swimlane-diagram/
 
 浏览器直接打开 `examples/mall-marketing-swimlane.html` 即可查看。
 
-## Validation
-
-检查示例泳道图连线：
-
-```bash
-python3 skills/html-swimlane-diagram/scripts/lint_svg_links.py examples/mall-marketing-swimlane.html
-```
-
-检查仓库结构和示例输出：
-
-```bash
-python3 scripts/validate_repo.py
-```
-
-GitHub Actions 会在 push 和 pull request 时自动执行校验。
-
 ## Scope
 
 适合：

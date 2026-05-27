@@ -144,22 +144,6 @@ html-swimlane-diagram/
 
 Open `examples/mall-marketing-swimlane.html` directly in a browser.
 
-## Validation
-
-Validate the example connector paths:
-
-```bash
-python3 skills/html-swimlane-diagram/scripts/lint_svg_links.py examples/mall-marketing-swimlane.html
-```
-
-Validate the repository structure and example output:
-
-```bash
-python3 scripts/validate_repo.py
-```
-
-GitHub Actions runs validation on push and pull request.
-
 ## Scope
 
 Fits:
