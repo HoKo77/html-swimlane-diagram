@@ -56,7 +56,7 @@ If you only provide a vague domain, the skill should research common workflow de
 ### Skill Installer
 
 ```bash
-$skill-installer install https://github.com/<your-github-username>/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram
+$skill-installer install https://github.com/HoKo77/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram
 ```
 
 Restart Codex if the skill does not appear immediately.
@@ -68,7 +68,7 @@ Paste this to an agent with shell access:
 ```text
 Install the html-swimlane-diagram skill for me:
 1. Make sure the local Codex skills directory exists.
-2. Install the skill from https://github.com/<your-github-username>/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram.
+2. Install the skill from https://github.com/HoKo77/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram.
 3. Verify the installed skill contains SKILL.md, agents/, assets/, references/, and scripts/.
 4. Run the example validation script and tell me the result.
 ```

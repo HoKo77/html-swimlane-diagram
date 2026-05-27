@@ -58,7 +58,7 @@ HTML Swimlane Diagram
 ### Skill Installer
 
 ```bash
-$skill-installer install https://github.com/<your-github-username>/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram
+$skill-installer install https://github.com/HoKo77/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram
 ```
 
 安装后如果没有立即出现，请重启 Codex。
@@ -70,7 +70,7 @@ $skill-installer install https://github.com/<your-github-username>/html-swimlane
 ```text
 请帮我安装 html-swimlane-diagram skill：
 1. 确保本地 Codex skills 目录存在。
-2. 从 https://github.com/<your-github-username>/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram 安装 skill。
+2. 从 https://github.com/HoKo77/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram 安装 skill。
 3. 验证安装目录里包含 SKILL.md、agents/、assets/、references/、scripts/。
 4. 运行示例校验脚本，告诉我安装结果。
 ```
