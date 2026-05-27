@@ -72,7 +72,7 @@ $skill-installer install https://github.com/HoKo77/html-swimlane-diagram/tree/ma
 1. 确保本地 Codex skills 目录存在。
 2. 从 https://github.com/HoKo77/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram 安装 skill。
 3. 验证安装目录里包含 SKILL.md、agents/、assets/、references/、scripts/。
-4. 运行示例校验脚本，告诉我安装结果。
+4. 告诉我安装结果。
 ```
 
 ## Example Prompts
@@ -127,8 +127,6 @@ html-swimlane-diagram/
 ├── examples/
 │   ├── mall-marketing-workflow.md
 │   └── mall-marketing-swimlane.html
-├── scripts/
-│   └── validate_repo.py
 └── skills/
     └── html-swimlane-diagram/
         ├── SKILL.md

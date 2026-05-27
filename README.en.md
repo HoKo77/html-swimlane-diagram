@@ -70,7 +70,7 @@ Install the html-swimlane-diagram skill for me:
 1. Make sure the local Codex skills directory exists.
 2. Install the skill from https://github.com/HoKo77/html-swimlane-diagram/tree/main/skills/html-swimlane-diagram.
 3. Verify the installed skill contains SKILL.md, agents/, assets/, references/, and scripts/.
-4. Run the example validation script and tell me the result.
+4. Tell me the result.
 ```
 
 ## Example Prompts
@@ -125,8 +125,6 @@ html-swimlane-diagram/
 ├── examples/
 │   ├── mall-marketing-workflow.md
 │   └── mall-marketing-swimlane.html
-├── scripts/
-│   └── validate_repo.py
 └── skills/
     └── html-swimlane-diagram/
         ├── SKILL.md
